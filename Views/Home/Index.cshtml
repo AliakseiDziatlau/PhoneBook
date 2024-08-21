@@ -1,0 +1,219 @@
+﻿@using WebApplicationPhoneBook.Models;
+@{
+    ViewData["Title"] = "Phone Book";
+}
+
+<style>
+    body {
+      margin: 0px;
+      background-color: #e2e2e2;
+    }
+
+    .headMenu {
+      padding-left: 20px;
+      background-color: #b0b0b0;
+    }
+    .headMenu p {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      display: inline-block;
+      margin-right: 30px;
+      font-size: 30px;
+      font-weight: 700;
+    }
+    .headMenu p:last-child {
+      margin-right: 0;
+    }
+    @@media (max-width: 768px) {
+      .headMenu p {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        font-size: 24px;
+        margin-right: 20px;
+      }
+    }
+    @@media (max-width: 480px) {
+      .headMenu p {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 18px;
+        margin-right: 10px;
+      }
+    }
+
+    .buttons-container {
+      padding-left: 20px;
+      padding-top: 20px;
+      background-color: #c6c6c6;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 20px;
+    }
+    .buttons-container img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    .buttons-container label {
+      font-size: 38px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .buttons-container input {
+      height: 40px;
+      font-size: 26px;
+      width: 300px;
+      margin-bottom: 20px;
+    }
+    @@media (max-width: 768px) {
+      .buttons-container input {
+        width: 100%;
+        flex-direction: column;
+      }
+    }
+    @@media (max-width: 480px) {
+      .buttons-container label, .buttons-container input {
+        width: 100%;
+      }
+      .buttons-container img {
+        margin-top: 10px;
+      }
+    }
+    @@media (min-width: 1440px) {
+      .buttons-container img {
+        width: 50px;
+        height: auto;
+      }
+      .buttons-container label {
+        font-size: 42px;
+      }
+      .buttons-container input {
+        height: 50px;
+        font-size: 20px;
+        width: 400px;
+      }
+    }
+
+    table {
+      display: grid;
+    }
+    table th {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+      font-size: 40px;
+      font-weight: 700;
+    }
+    table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    table .th-number {
+      width: 150px;
+    }
+    table .th-name {
+      width: 550px;
+    }
+    table .th-phone {
+      width: 400px;
+    }
+    table .th-adress {
+      width: 550px;
+    }
+    table .td-number {
+      width: 150px;
+    }
+    table .td-name {
+      width: 550px;
+    }
+    table .td-phone {
+      width: 400px;
+    }
+    table .td-adress {
+      width: 550px;
+    }
+    @@media (max-width: 1990px) {
+      table th {
+        font-size: 48px;
+        padding: 16px;
+      }
+      table td {
+        font-size: 32px;
+        padding: 12px;
+      }
+      table .th-number {
+        width: 250px;
+      }
+      table .td-number {
+        width: 250px;
+      }
+      table .th-name {
+        width: 750px;
+      }
+      table .td-name {
+        width: 750px;
+      }
+      table .th-phone {
+        width: 550px;
+      }
+      table .td-phone {
+        width: 550px;
+      }
+      table .th-adress {
+        width: 750px;
+      }
+      table .td-adress {
+        width: 750px;
+      }
+    }
+
+    .tab-container {
+      background-color: #b0b0b0;
+    }
+</style>
+
+
+<nav>
+    <div class="headMenu">
+        <p>PhoneBook</p>
+        <p>About</p>
+    </div>
+</nav>
+<section>
+    <div class="buttons-container">
+        <img src="img/Open_48x48.png" alt="open_img">
+        <img src="img/Save_48x48.png" alt="save_img">
+        <label for="username">Name:</label>
+        <input type="text" id="username" name="username" placeholder="enter your name">
+        <label for="phoneNumber">Phone:</label>
+        <input type="text" id="Phone" name="Phone" placeholder="enter your phone">
+        <img src="img/Add_48x48.png" alt="add_img">
+        <img src="img/Delete_48x48.png" alt="delete_img">
+    </div>
+</section>
+
+<div class="tab-container">
+    <table>
+        <tr>
+            <th class="th-number"></th>
+            <th class="th-name">Name</th>
+            <th class="th-phone">Phone</th>
+            <th class="th-adress">Adress</th>
+        </tr>
+        @foreach (PhoneItem item in Model)
+        {
+         <tr>
+            <td class="td-number">@item.ID</td>
+            <td class="td-name">@item.Name</td>
+            <td class="td-phone">@item.Phone</td>
+            <td class="td-adress">@item.Address</td>
+        </tr> 
+        }
+    </table>
+</div>
