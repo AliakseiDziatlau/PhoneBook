@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "yMldmLWwfKWsU8nWWSyyeY6VVeKu/IC3lWAXqTZ//GQ=",
+  "Hash": "qqMcK6QXNrl1lZOh/HPDacYBmX5xcjO9/009AYsRNmI=",
   "Source": "WebApplicationPhoneBook",
   "BasePath": "_content/WebApplicationPhoneBook",
   "Mode": "Default",
@@ -53,6 +53,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\MacBook_Windows\\source\\repos\\WebApplicationPhoneBook\\WebApplicationPhoneBook\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\WebApplicationPhoneBook.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\MacBook_Windows\\source\\repos\\WebApplicationPhoneBook\\WebApplicationPhoneBook\\wwwroot\\css\\myStyle.css",
+      "SourceId": "WebApplicationPhoneBook",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\MacBook_Windows\\source\\repos\\WebApplicationPhoneBook\\WebApplicationPhoneBook\\wwwroot\\",
+      "BasePath": "_content/WebApplicationPhoneBook",
+      "RelativePath": "css/myStyle.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\myStyle.css"
     },
     {
       "Identity": "C:\\Users\\MacBook_Windows\\source\\repos\\WebApplicationPhoneBook\\WebApplicationPhoneBook\\wwwroot\\css\\site.css",

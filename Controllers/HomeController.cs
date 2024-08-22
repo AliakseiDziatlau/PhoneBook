@@ -6,16 +6,7 @@ namespace WebApplicationPhoneBook.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            List<PhoneItem> listPhone = new List<PhoneItem>() {
+        private static List<PhoneItem> listPhone = new List<PhoneItem>() {
                 new PhoneItem{
                     ID=1,
                     Name = "Goga",
@@ -35,13 +26,31 @@ namespace WebApplicationPhoneBook.Controllers
                     Address = "3jlkjljlk"
                 }
             };
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+
+        public IActionResult Index()
+        {
+            
 
             return View(listPhone);
         }
 
-        public IActionResult Privacy()
+        public IActionResult AddElement()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddElement(PhoneItem phoneItem)
+        {
+            phoneItem.ID = listPhone.Count() + 1;
+            listPhone.Add(phoneItem);
+            return View("Index", listPhone);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

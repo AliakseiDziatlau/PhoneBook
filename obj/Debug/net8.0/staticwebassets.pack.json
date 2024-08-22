@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\WebApplicationPhoneBook.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\MacBook_Windows\\source\\repos\\WebApplicationPhoneBook\\WebApplicationPhoneBook\\wwwroot\\css\\myStyle.css",
+      "PackagePath": "staticwebassets\\css\\myStyle.css"
+    },
+    {
       "Id": "C:\\Users\\MacBook_Windows\\source\\repos\\WebApplicationPhoneBook\\WebApplicationPhoneBook\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
