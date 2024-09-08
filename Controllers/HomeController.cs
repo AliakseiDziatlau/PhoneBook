@@ -1,56 +1,108 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebApplicationPhoneBook.Models;
+using WebApplicationPhoneBook.services;
 
 namespace WebApplicationPhoneBook.Controllers
 {
     public class HomeController : Controller
     {
-        private static List<PhoneItem> listPhone = new List<PhoneItem>() {
-                new PhoneItem{
-                    ID=1,
-                    Name = "Goga",
-                    Phone = "123432",
-                    Address = "34534"
-                },
-                new PhoneItem{
-                    ID=2,
-                    Name = "Aerg",
-                    Phone = "123432",
-                    Address = "34534"
-                },
-                new PhoneItem{
-                    ID=3,
-                    Name = "Gihohoih",
-                    Phone = "1789789789",
-                    Address = "3jlkjljlk"
-                }
-            };
+        //private CtrlDataBase ctrlDataBase = new CtrlDataBase();
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private ICtrlDataBase _ctrlDataBase;
+
+        public HomeController(ILogger<HomeController> logger, ICtrlDataBase ctrlDataBase)
         {
+            _ctrlDataBase = ctrlDataBase;  
             _logger = logger;
         }
 
         public IActionResult Index()
         {
-            
 
-            return View(listPhone);
+            ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
+            modelPhoneItem.listPhone = _ctrlDataBase.GetList();
+            return View(modelPhoneItem);
         }
+
+        //public IActionResult GetFilter(string Name, int selectbox)
+        //{
+        //    ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
+        //    switch (selectbox)
+        //    {
+        //        case 1:
+        //            modelPhoneItem.listPhone = _ctrlDataBase.GetListFio(Name);
+        //            break;
+        //        case 2:
+        //            modelPhoneItem.listPhone = _ctrlDataBase.GetListPhone(Name);
+        //            break;
+        //        case 3:
+        //            modelPhoneItem.listPhone=_ctrlDataBase.GetListAdress(Name);
+        //            break;
+        //        default:
+        //            modelPhoneItem.listPhone = _ctrlDataBase.GetList();
+        //            break;
+        //    }
+        //    return View("Index", modelPhoneItem);
+        //}
+
+        public IActionResult GetFilter(string Name, string Phone, string Adress )
+        {
+            ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
+            modelPhoneItem.listPhone = _ctrlDataBase.GetFullList(Name, Phone, Adress);
+            //switch (selectbox)
+            //{
+            //    case 1:
+            //        modelPhoneItem.listPhone = _ctrlDataBase.GetListFio(Name);
+            //        break;
+            //    case 2:
+            //        modelPhoneItem.listPhone = _ctrlDataBase.GetListPhone(Name);
+            //        break;
+            //    case 3:
+            //        modelPhoneItem.listPhone = _ctrlDataBase.GetListAdress(Name);
+            //        break;
+            //    default:
+            //        modelPhoneItem.listPhone = _ctrlDataBase.GetList();
+            //        break;
+            //}
+            return View("Index", modelPhoneItem);
+        }
+
+
 
         public IActionResult AddElement()
         {
             return View();
         }
+        public IActionResult EditPhone(int id)
+        {
+            var phone = _ctrlDataBase.GetList().Find(el=>el.ID==id);
+            return View("AddElement", phone);
+        }
 
         [HttpPost]
         public IActionResult AddElement(PhoneItem phoneItem)
         {
-            phoneItem.ID = listPhone.Count() + 1;
-            listPhone.Add(phoneItem);
-            return View("Index", listPhone);
+            if (phoneItem.ID == 0)
+            {
+                _ctrlDataBase.Add(phoneItem);
+            }
+            else
+            {
+                _ctrlDataBase.Edit(phoneItem.ID, phoneItem);
+            }
+            ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
+            modelPhoneItem.listPhone = _ctrlDataBase.GetList();
+            return View("Index", modelPhoneItem);
+        }
+
+        public IActionResult DeletePhone(int id)
+        {
+            _ctrlDataBase.Delete(id);
+            ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
+            modelPhoneItem.listPhone = _ctrlDataBase.GetList();  
+            return View("Index",modelPhoneItem);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

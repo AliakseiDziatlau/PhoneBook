@@ -1,3 +1,5 @@
+using WebApplicationPhoneBook.services;
+
 namespace WebApplicationPhoneBook
 {
     public class Program
@@ -8,6 +10,8 @@ namespace WebApplicationPhoneBook
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddSingleton<ICtrlDataBase, CtrlDataBase>();
 
             var app = builder.Build();
 

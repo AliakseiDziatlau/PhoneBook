@@ -18,4 +18,13 @@ namespace WebApplicationPhoneBook.Models
         [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "The field 'Email' is necessary")]
         public string? Email { get; set; }
     }
+
+    public class PhoneItemFilter { 
+        public string name { get; set; }
+    }
+    public class ModelPhoneItem { 
+        public PhoneItem PhoneItem { get; set; }
+        public PhoneItemFilter PhoneItemFilter { get; set; }
+        public List<PhoneItem> listPhone { get; set;  }
+    }
 }

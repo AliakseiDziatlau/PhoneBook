@@ -1,37 +1,88 @@
-﻿@model IEnumerable<WebApplicationPhoneBook.Models.PhoneItem>
+﻿@model WebApplicationPhoneBook.Models.ModelPhoneItem
 
 @{
     ViewData["Title"] = "index";
 }
 
-<h1>index</h1>
+<h1>Search...</h1>
 
 <p>
     <a asp-action="AddElement">Create New</a>
 </p>
+
+@* @using (Html.BeginForm("GetFilter", "Home", FormMethod.Post, new { id = "data-filter" }))
+{
+    <p>
+        <label>Имя</label><br />
+        @Html.TextBox("Name")
+    </p>
+     <p>
+        <label>Имя</label><br />
+        @Html.ListBox("ListFilter")
+    </p>
+    <button type="submit" class="button-blue button-action">Применить</button>
+
+} *@
+
+@using (Html.BeginForm("GetFilter", "Home", FormMethod.Post, new { id = "data-filter" }))
+{
+    <div class="row">
+        @* <p>
+            <label>Имя</label><br />
+            @Html.TextBox("Name")
+        </p> *@
+
+        <div style="display: flex; gap: 20px;">
+            <div>
+                <label>Name</label><br />
+                @Html.TextBox("Name")
+            </div>
+            <div>
+                <label>Phone</label><br />
+                @Html.TextBox("Phone")
+            </div>
+            <div>
+                <label>Adress</label><br />
+                @Html.TextBox("Adress")
+            </div>
+        </div> 
+
+        @* <p>
+            <label>Имя</label><br />
+            <select id="selectbox" name="selectbox" ;>
+                <option value=1 selected>Name</option>
+                <option value=2>Phone</option>
+                <option value=3>Adress</option>
+            </select>
+        </p> *@
+    </div>
+    <button type="submit" class="button-blue button-action">Применить</button>
+
+}
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ID)
+                @Html.DisplayNameFor(model => model.PhoneItem.ID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.PhoneItem.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Phone)
+                @Html.DisplayNameFor(model => model.PhoneItem.Phone)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                @Html.DisplayNameFor(model => model.PhoneItem.Address)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                @Html.DisplayNameFor(model => model.PhoneItem.Email)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.listPhone) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ID)
@@ -49,11 +100,45 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "EditPhone", new { id = item.ID }) |
+                <a href="#" onclick="deleteItm(@item.ID)">Delete</a>
+                @* @Html.ActionLink("Delete", "Delete", new { id = item.ID }) *@
             </td>
         </tr>
 }
     </tbody>
 </table>
+<script>
+    async function deleteItm(id) {
+        let isDelete = confirm("Вы хотите удалить запись?");
+        if (isDelete) {
+            try {
+
+                const response = await fetch('/Home/DeletePhone/' + id, {
+                    method: 'GET'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                window.location.href = '@Url.Action("Index", "Home")' ;
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        }
+    }
+    // function deleteItm(id) {
+    //     let isDelete = confirm("Вы хотите удалить запись?");
+    //     if (isDelete) {
+    //         //      window.open("Home/Delete/" + id);
+    //         $.ajax({
+    //             url: '/Home/Delete/' + id,       
+    //             method: 'get',
+    //             success: function (data) {
+    //             document.location.href = '@Url.Action("Index", "Home")';
+    //         }
+    //       });
+    //     }
+    // }
+</script>
