@@ -26,37 +26,43 @@
 
 @using (Html.BeginForm("GetFilter", "Home", FormMethod.Post, new { id = "data-filter" }))
 {
-    <div class="row">
-        @* <p>
-            <label>Имя</label><br />
-            @Html.TextBox("Name")
-        </p> *@
-
-        <div style="display: flex; gap: 20px;">
-            <div>
-                <label>Name</label><br />
+    
+    <button class="filter-on">Filter</button>
+    <div class="filter-container hidden">
+        <button class="close-btn hidden">&times;</button>
+        <div class="row">
+        
+            @* <p>
+                <label>Имя</label><br />
                 @Html.TextBox("Name")
-            </div>
-            <div>
-                <label>Phone</label><br />
-                @Html.TextBox("Phone")
-            </div>
-            <div>
-                <label>Adress</label><br />
-                @Html.TextBox("Adress")
-            </div>
-        </div> 
+            </p> *@
 
-        @* <p>
-            <label>Имя</label><br />
-            <select id="selectbox" name="selectbox" ;>
-                <option value=1 selected>Name</option>
-                <option value=2>Phone</option>
-                <option value=3>Adress</option>
-            </select>
-        </p> *@
+            <div class="labels-container">
+                <div>
+                    <label>Name</label><br />
+                    @Html.TextBox("Name")
+                </div>
+                <div>
+                    <label>Phone</label><br />
+                    @Html.TextBox("Phone")
+                </div>
+                <div>
+                    <label>Adress</label><br />
+                    @Html.TextBox("Adress")
+                </div>
+            </div> 
+
+            @* <p>
+                <label>Имя</label><br />
+                <select id="selectbox" name="selectbox" ;>
+                    <option value=1 selected>Name</option>
+                    <option value=2>Phone</option>
+                    <option value=3>Adress</option>
+                </select>
+            </p> *@
+        </div>
+        <button type="submit" class="button-blue button-action">Применить</button>
     </div>
-    <button type="submit" class="button-blue button-action">Применить</button>
 
 }
 
@@ -141,4 +147,13 @@
     //       });
     //     }
     // }
+    const filterOn = document.querySelector(".filter-on");
+    const filtersContaner = document.querySelector(".filter-container");
+    const btnClose = document.querySelector(".close-btn");
+    filterOn.addEventListener("click", function (e) {
+        e.preventDefault();
+        filtersContaner.classList.remove("hidden");
+        filterOn.classList.add("hidden");
+        btnClose.classList.remove("hidden");
+    });
 </script>

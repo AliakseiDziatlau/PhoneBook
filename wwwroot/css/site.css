@@ -1,4 +1,4 @@
-.navbar {
+﻿.navbar {
     background-color: #b0b0b0;
 }
 
@@ -45,3 +45,40 @@ html {
 body {
   margin-bottom: 0px;
 }
+.hidden {
+    display: none;
+}
+
+.filter-container {
+    position: relative; 
+    padding: 20px;
+    border: 1px solid #ccc; 
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    /* font-size: 24px;
+    font-weight: bold;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #333;*/
+}
+
+.close-btn:hover {
+    color: red;
+}
+
+.labels-container {
+    margin-bottom: 10px;
+    display: flex;
+    gap: 20px;
+}
+

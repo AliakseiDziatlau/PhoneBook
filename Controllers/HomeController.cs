@@ -20,7 +20,6 @@ namespace WebApplicationPhoneBook.Controllers
 
         public IActionResult Index()
         {
-
             ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
             modelPhoneItem.listPhone = _ctrlDataBase.GetList();
             return View(modelPhoneItem);
