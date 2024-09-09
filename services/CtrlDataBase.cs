@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using System.Runtime.CompilerServices;
 using WebApplicationPhoneBook.Models;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -8,9 +9,7 @@ namespace WebApplicationPhoneBook.services
     {
         string GetErrorText();
         List<PhoneItem> GetList();
-        List<PhoneItem> GetListFio(string text);
-        List<PhoneItem> GetListPhone(string text);
-        List<PhoneItem> GetListAdress(string text);
+        List<PhoneItem> GetList(PhoneItemFilter phoneItemFilter);
 
         List<PhoneItem> GetFullList(string name, string phone, string adress);
         bool Add(PhoneItem recordItem);
@@ -77,31 +76,102 @@ namespace WebApplicationPhoneBook.services
             return listRecord;
         }
 
-        public List<PhoneItem> GetListFio(string text)
-        {
-            _GetRecord($"SELECT p.Id, p.Name, p.Phone_number, p.Adress FROM Person p Where p.Name like \'%{text}%\'");
-            return listRecord;
-        }
+        //public List<PhoneItem> GetList(PhoneItemFilter PhoneItemFilter)
+        //{
+        //    string strRequest = "SELECT p.Id, p.Name, p.Phone_number, p.Adress,  p.Email  FROM Person p ";
+        //    bool isWhere = false;
+        //    if (PhoneItemFilter.Name != null)
+        //    {
+        //        isWhere = true;
+        //        strRequest += $" WHERE p.Name like \'%{PhoneItemFilter.Name}%\'";
+        //    }
+        //    if (PhoneItemFilter.Phone != null)
+        //    {
+        //        if (isWhere == false)
+        //        {
+        //            isWhere = true;
+        //            strRequest += $" WHERE ";
+        //        }
+        //        else strRequest += $" AND ";
+        //        strRequest += $"p.Phone_number like \'%{PhoneItemFilter.Phone}%\'";
+        //    }
+        //    if (PhoneItemFilter.Address != null)
+        //    {
+        //        if (isWhere == false)
+        //        {
+        //            isWhere = true;
+        //            strRequest += $" WHERE ";
+        //        }
+        //        else strRequest += $" AND ";
+        //        strRequest += $"p.Adress like \'%{PhoneItemFilter.Address}%\'";
+        //    }
+        //    _GetRecord(strRequest);
+        //    return listRecord;
+        //}
 
-        public List<PhoneItem> GetListPhone(string text)
+        public List<PhoneItem> GetList(PhoneItemFilter PhoneItemFilter)
         {
-            _GetRecord($"SELECT p.Id, p.Name, p.Phone_number, p.Adress FROM Person p Where p.Phone_number like \'%{text}%\'");
-            return listRecord;
-        }
+            listRecord.Clear();
+            string sqlExpression = "GetPersonFilter ";
 
-        public List<PhoneItem> GetListAdress(string text) {
-            _GetRecord($"SELECT p.Id, p.Name, p.Phone_number, p.Adress FROM Person p Where p.Adress like \'%{text}%\'");
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                // указываем, что команда представляет хранимую процедуру
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                if (PhoneItemFilter.Name != null)
+                {
+                    SqlParameter nameParam = new SqlParameter
+                    {
+                        ParameterName = "@Name",
+                        Value = PhoneItemFilter.Name
+                    };
+                    // добавляем параметр
+                    command.Parameters.Add(nameParam);
+                }
+                // параметр для ввода возраста
+                if (PhoneItemFilter.Phone != null)
+                {
+                    SqlParameter nameParam = new SqlParameter
+                    {
+                        ParameterName = "@Phone_number",
+                        Value = PhoneItemFilter.Phone
+                    };
+                    // добавляем параметр
+                    command.Parameters.Add(nameParam);
+                }
+
+                var reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+
+                    while (reader.Read())
+                    {
+                        PhoneItem item = new PhoneItem();
+                        item.ID = reader.GetInt32(0);
+                        item.Name = reader.GetString(1);
+                        item.Phone = reader.GetString(2);
+                        item.Address = reader.GetString(3);
+                        item.Email = reader.GetString(4);
+
+                        listRecord.Add(item);
+                    }
+                }
+                reader.Close();
+            }
             return listRecord;
         }
 
         public List<PhoneItem> GetFullList(string name, string phone, string adress) {
-            _GetRecord($"SELECT p.Id, p.Name, p.Phone_number, p.Adress FROM Person p Where p.Adress like \'%{adress}%\' And p.Phone_number like \'%{phone}%\' And p.Name like \'%{name}%\'");
+            _GetRecord($"SELECT p.Id, p.Name, p.Phone_number, p.Adress, p.Email FROM Person p Where p.Adress like \'%{adress}%\' And p.Phone_number like \'%{phone}%\' And p.Name like \'%{name}%\'");
             return listRecord;
         }
 
         public bool GetAllRecord()
         {
-            return _GetRecord("SELECT p.Id, p.Name, p.Phone_number, p.Adress FROM Person p");
+            return _GetRecord("SELECT p.Id, p.Name, p.Phone_number, p.Adress, p.Email FROM Person p");
         }
 
         public bool _GetRecord(string sqlExpression)
@@ -122,6 +192,7 @@ namespace WebApplicationPhoneBook.services
                         item.Name = reader.GetString(1);
                         item.Phone = reader.GetString(2);
                         item.Address = reader.GetString(3);// + " " + reader.GetString(3);
+                        item.Email= reader.GetString(4);
                         listRecord.Add(item);
                     }
 

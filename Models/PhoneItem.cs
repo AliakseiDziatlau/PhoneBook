@@ -19,8 +19,13 @@ namespace WebApplicationPhoneBook.Models
         public string? Email { get; set; }
     }
 
-    public class PhoneItemFilter { 
-        public string name { get; set; }
+    public class PhoneItemFilter {
+        [DisplayName("Name")]
+        public string Name { get; set; }
+        [DisplayName("Phone")]
+        public string Phone { get; set; }
+        [DisplayName("Address")]
+        public string Address { get; set; }
     }
     public class ModelPhoneItem { 
         public PhoneItem PhoneItem { get; set; }

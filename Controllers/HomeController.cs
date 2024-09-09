@@ -25,48 +25,19 @@ namespace WebApplicationPhoneBook.Controllers
             return View(modelPhoneItem);
         }
 
-        //public IActionResult GetFilter(string Name, int selectbox)
-        //{
-        //    ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
-        //    switch (selectbox)
-        //    {
-        //        case 1:
-        //            modelPhoneItem.listPhone = _ctrlDataBase.GetListFio(Name);
-        //            break;
-        //        case 2:
-        //            modelPhoneItem.listPhone = _ctrlDataBase.GetListPhone(Name);
-        //            break;
-        //        case 3:
-        //            modelPhoneItem.listPhone=_ctrlDataBase.GetListAdress(Name);
-        //            break;
-        //        default:
-        //            modelPhoneItem.listPhone = _ctrlDataBase.GetList();
-        //            break;
-        //    }
-        //    return View("Index", modelPhoneItem);
-        //}
-
-        public IActionResult GetFilter(string Name, string Phone, string Adress )
+        public IActionResult GetFilter(PhoneItemFilter PhoneItemFilter)
         {
             ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
-            modelPhoneItem.listPhone = _ctrlDataBase.GetFullList(Name, Phone, Adress);
-            //switch (selectbox)
-            //{
-            //    case 1:
-            //        modelPhoneItem.listPhone = _ctrlDataBase.GetListFio(Name);
-            //        break;
-            //    case 2:
-            //        modelPhoneItem.listPhone = _ctrlDataBase.GetListPhone(Name);
-            //        break;
-            //    case 3:
-            //        modelPhoneItem.listPhone = _ctrlDataBase.GetListAdress(Name);
-            //        break;
-            //    default:
-            //        modelPhoneItem.listPhone = _ctrlDataBase.GetList();
-            //        break;
-            //}
+            modelPhoneItem.listPhone=_ctrlDataBase.GetList(PhoneItemFilter);
             return View("Index", modelPhoneItem);
         }
+
+        //public IActionResult GetFilter(string Name, string Phone, string Adress )
+        //{
+        //    ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
+        //    modelPhoneItem.listPhone = _ctrlDataBase.GetFullList(Name, Phone, Adress);
+        //    return View("Index", modelPhoneItem);
+        //}
 
 
 
