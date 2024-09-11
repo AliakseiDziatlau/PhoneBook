@@ -29,7 +29,7 @@
     
     <button class="filter-on">Filter</button>
     <div class="filter-container hidden">
-        <button class="close-btn hidden">&times;</button>
+        <button type="button" class="close-btn hidden">&times;</button> 
         <div class="row">
         
             @* <p>
@@ -156,8 +156,19 @@
         filterOn.classList.add("hidden");
         btnClose.classList.remove("hidden");
     });
-    // btnSetSettings.addEventListener("click", function (e) { 
-    //     e.preventDefault();
+    window.addEventListener('load', function () {
+        // Этот код выполнится, когда вся страница полностью загружена
+        if ('@ViewBag.IsFilterClose' === 'False') {
+            filtersContaner.classList.remove("hidden");
+            btnClose.classList.remove("hidden");
+            filterOn.classList.add("hidden");
+        }
 
-    // })
+    });
+
+    btnClose.addEventListener("click", function (e) {
+        filtersContaner.classList.add("hidden");
+        btnClose.classList.add("hidden");
+        filterOn.classList.remove("hidden");
+    })
 </script>

@@ -22,6 +22,7 @@ namespace WebApplicationPhoneBook.Controllers
         {
             ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
             modelPhoneItem.listPhone = _ctrlDataBase.GetList();
+            ViewBag.IsFilterClose = true;
             return View(modelPhoneItem);
         }
 
@@ -29,6 +30,7 @@ namespace WebApplicationPhoneBook.Controllers
         {
             ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
             modelPhoneItem.listPhone=_ctrlDataBase.GetList(PhoneItemFilter);
+            ViewBag.IsFilterClose = false;
             return View("Index", modelPhoneItem);
         }
 
