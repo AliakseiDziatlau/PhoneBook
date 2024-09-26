@@ -1,22 +1,26 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebApplicationPhoneBook.Models;
 using WebApplicationPhoneBook.services;
 
 namespace WebApplicationPhoneBook.Controllers
 {
+
     public class HomeController : Controller
     {
         //private CtrlDataBase ctrlDataBase = new CtrlDataBase();
         private readonly ILogger<HomeController> _logger;
 
         private ICtrlDataBase _ctrlDataBase;
+        private List<string> _listCity = new List<string>() { "Polotsk", "Minsk", "Vitebsk", "Warszawa" };
 
         public HomeController(ILogger<HomeController> logger, ICtrlDataBase ctrlDataBase)
         {
-            _ctrlDataBase = ctrlDataBase;  
+            _ctrlDataBase = ctrlDataBase;
             _logger = logger;
+    
         }
+
 
         public IActionResult Index()
         {
@@ -29,7 +33,7 @@ namespace WebApplicationPhoneBook.Controllers
         public IActionResult GetFilter(PhoneItemFilter PhoneItemFilter)
         {
             ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
-            modelPhoneItem.listPhone=_ctrlDataBase.GetList(PhoneItemFilter);
+            modelPhoneItem.listPhone = _ctrlDataBase.GetList(PhoneItemFilter);
             ViewBag.IsFilterClose = false;
             return View("Index", modelPhoneItem);
         }
@@ -45,11 +49,13 @@ namespace WebApplicationPhoneBook.Controllers
 
         public IActionResult AddElement()
         {
+            ViewBag.ListCity = _listCity;
             return View();
         }
         public IActionResult EditPhone(int id)
         {
-            var phone = _ctrlDataBase.GetList().Find(el=>el.ID==id);
+            var phone = _ctrlDataBase.GetList().Find(el => el.ID == id);
+            ViewBag.ListCity = _listCity;
             return View("AddElement", phone);
         }
 
@@ -73,8 +79,8 @@ namespace WebApplicationPhoneBook.Controllers
         {
             _ctrlDataBase.Delete(id);
             ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
-            modelPhoneItem.listPhone = _ctrlDataBase.GetList();  
-            return View("Index",modelPhoneItem);
+            modelPhoneItem.listPhone = _ctrlDataBase.GetList();
+            return View("Index", modelPhoneItem);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -25,9 +25,22 @@
                 <input asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
+            @* <div class="form-group">
+                <div>
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                    <input type="button" class="btn btn-primary">City</input>
+                </div>
+            </div> *@
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
+                <div class="input-group">
+                    <input asp-for="Address" class="form-control" id="addressInput" />
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CityId">City</button>
+                    </div>
+                </div>
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -45,6 +58,60 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="CityId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Города</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" style="width: 100%;" id="myInput" oninput="handleInput()" />
+                <select class="form-select" id="citySelect" size="3" aria-label="Выберите город">
+                    @if (ViewBag.ListCity != null)
+                    {
+                        foreach (var city in ViewBag.ListCity)
+                        {
+                            <option value="@city">@city</option>
+                        }
+                    }
+                </select>
+                @* <select class="form-select" id="citySelect" size="3" aria-label="size 3 select example">
+                    @for (int i = 0; i < ViewBag.ListCity.Count; i++)
+                    {
+                        <option value=@i>@ViewBag.ListCity[i]</option>
+                    }
+
+                </select> *@
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="handleSelect()" data-bs-dismiss="modal">Select</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function handleSelect() {
+        const selectElement = document.getElementById("citySelect");
+        const selectedCity = selectElement.options[selectElement.selectedIndex].text;
+        document.getElementById("addressInput").value = selectedCity;
+    }
+
+    document.getElementById('myInput').addEventListener('input', function () {
+        const filterValue = this.value.toLowerCase();
+        const select = document.getElementById('citySelect');
+        const options = select.options;
+
+        for (let i = 0; i < options.length; i++) {
+            const optionText = options[i].text.toLowerCase();
+            options[i].style.display = optionText.includes(filterValue) ? 'block' : 'none';
+        }
+    });
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

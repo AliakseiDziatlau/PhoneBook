@@ -27,7 +27,7 @@ namespace WebApplicationPhoneBook.services
         private string textErr = "";
         public bool Add(PhoneItem recordItem)
         {
-            string sqlExpression = $"INSERT INTO Person (Name, Phone_number, Adress) VALUES (\'{recordItem.Name}', \'{recordItem.Phone}\', \'{recordItem.Address}\')";
+            string sqlExpression = $"INSERT INTO Person (Name, Phone_number, Adress, Email) VALUES (\'{recordItem.Name}', \'{recordItem.Phone}\', \'{recordItem.Address}\', \'{recordItem.Email}\')";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -54,7 +54,7 @@ namespace WebApplicationPhoneBook.services
 
         public bool Edit(int i, PhoneItem recordItem)
         {
-            string sqlExpression = $"UPDATE Person SET Name = \'{recordItem.Name}\', Phone_number = \'{recordItem.Phone}\', Adress = \'{recordItem.Address}\'  where Id = {recordItem.ID}";
+            string sqlExpression = $"UPDATE Person SET Name = \'{recordItem.Name}\', Phone_number = \'{recordItem.Phone}\', Adress = \'{recordItem.Address}\', Email=\'{recordItem.Email}\'  where Id = {recordItem.ID}";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -192,7 +192,8 @@ namespace WebApplicationPhoneBook.services
                         item.Name = reader.GetString(1);
                         item.Phone = reader.GetString(2);
                         item.Address = reader.GetString(3);// + " " + reader.GetString(3);
-                        item.Email= reader.GetString(4);
+                        if(!reader.IsDBNull(4))
+                            item.Email= reader.GetString(4);
                         listRecord.Add(item);
                     }
 
