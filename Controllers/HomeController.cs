@@ -13,6 +13,9 @@ namespace WebApplicationPhoneBook.Controllers
 
         private ICtrlDataBase _ctrlDataBase;
         private List<string> _listCity = new List<string>() { "Polotsk", "Minsk", "Vitebsk", "Warszawa" };
+        private List<string> _listCountry = new List<string>() { "Belarus", "Poland" };
+        private List<string> _listStreet = new List<string>() { "Molodeznaya", "Parkowaya" };
+        private List<string> _listHouseNumber = new List<string>() { "4", "5A" };
 
         public HomeController(ILogger<HomeController> logger, ICtrlDataBase ctrlDataBase)
         {
@@ -50,12 +53,18 @@ namespace WebApplicationPhoneBook.Controllers
         public IActionResult AddElement()
         {
             ViewBag.ListCity = _listCity;
+            ViewBag.ListCountry = _listCountry;
+            ViewBag.ListStreet = _listStreet;
+            ViewBag.ListHouseNumber = _listHouseNumber;
             return View();
         }
         public IActionResult EditPhone(int id)
         {
             var phone = _ctrlDataBase.GetList().Find(el => el.ID == id);
             ViewBag.ListCity = _listCity;
+            ViewBag.ListCountry = _listCountry;
+            ViewBag.ListStreet = _listStreet;
+            ViewBag.ListHouseNumber = _listHouseNumber;
             return View("AddElement", phone);
         }
 

@@ -231,3 +231,4 @@ C:\Users\MacBook_Windows\source\repos\WebApplicationPhoneBook\WebApplicationPhon
 C:\Users\MacBook_Windows\source\repos\WebApplicationPhoneBook\WebApplicationPhoneBook\obj\Debug\net8.0\WebApplicationPhoneBook.pdb
 C:\Users\MacBook_Windows\source\repos\WebApplicationPhoneBook\WebApplicationPhoneBook\obj\Debug\net8.0\WebApplicationPhoneBook.genruntimeconfig.cache
 C:\Users\MacBook_Windows\source\repos\WebApplicationPhoneBook\WebApplicationPhoneBook\obj\Debug\net8.0\ref\WebApplicationPhoneBook.dll
+C:\Users\MacBook_Windows\source\repos\WebApplicationPhoneBook\WebApplicationPhoneBook\bin\Debug\net8.0\CsvHelper.dll

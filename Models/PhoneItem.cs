@@ -12,9 +12,23 @@ namespace WebApplicationPhoneBook.Models
         [DisplayName("Phone")]
         [Required(ErrorMessage = "The field 'Phone' is necessary")]
         public string Phone { get; set; }
-        [DisplayName("Address")]
+
+        [DisplayName("Country")]
+        [Required(ErrorMessage = "The field 'Country' is necessary")]
+        public string Country { get; set; }
+        
+        [DisplayName("City")]
         [Required(ErrorMessage = "The field 'Address' is necessary")]
-        public string Address { get; set; }
+        public string City { get; set; }
+
+        [DisplayName("Street")]
+        [Required(ErrorMessage = "The field 'Address' is necessary")]
+        public string Street { get; set; }
+
+        [DisplayName("House number")]
+        [Required(ErrorMessage = "The field 'Address' is necessary")]
+        public string House_number { get; set; }
+
         [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "The field 'Email' is necessary")]
         public string? Email { get; set; }
     }
@@ -24,8 +38,14 @@ namespace WebApplicationPhoneBook.Models
         public string Name { get; set; }
         [DisplayName("Phone")]
         public string Phone { get; set; }
-        [DisplayName("Address")]
-        public string Address { get; set; }
+        [DisplayName("Country")]
+        public string Country { get; set; }
+        [DisplayName("City")]
+        public string City { get; set; }
+        [DisplayName("Street")]
+        public string Street { get; set; }
+        [DisplayName("House number")]
+        public string House_number { get; set; }
     }
     public class ModelPhoneItem { 
         public PhoneItem PhoneItem { get; set; }

@@ -64,17 +64,33 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    /* font-size: 24px;
-    font-weight: bold;
-    border: none;
-    background: none;
-    cursor: pointer;
-    color: #333;*/
+    transition: transform 0.5s ease;
 }
 
 .close-btn:hover {
+    transform: rotate(360deg);
     color: red;
 }
+
+.reset-btn {
+    position: absolute;
+    top: 12px;
+    right: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
+
+.reset-btn:hover {
+    transform: rotate(360deg);
+    color: red;
+}
+
+
+
 
 .labels-container {
     margin-bottom: 10px;

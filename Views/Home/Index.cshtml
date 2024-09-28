@@ -24,83 +24,120 @@
 
 } *@
 
+
+<!--Filter window-->
 @using (Html.BeginForm("GetFilter", "Home", FormMethod.Post, new { id = "data-filter" }))
 {
     
     <button class="filter-on">Filter</button>
     <div class="filter-container hidden">
-        <button type="button" class="close-btn hidden">&times;</button> 
+        <button type="button" class="close-btn hidden">&times;</button>
+        <button type="button" class="reset-btn">⟳</button>
         <div class="row">
-        
-            @* <p>
-                <label>Имя</label><br />
-                @Html.TextBox("Name")
-            </p> *@
-
             <div class="labels-container">
+                <!--Label for name-->
                 <div>
                     <label>Name</label><br />
-                    @Html.TextBoxFor(m=>m.PhoneItemFilter.Name)
+                    @Html.TextBoxFor(m=>m.PhoneItemFilter.Name, new {id="nameInput"})
                 </div>
+                <!--Label for phone-->
                 <div>
                     <label>Phone</label><br />
-                    @Html.TextBoxFor(m=>m.PhoneItemFilter.Phone)
+                    @Html.TextBoxFor(m => m.PhoneItemFilter.Phone, new { id = "phoneInput" })
                 </div>
+                <!--Label for country-->
                 <div>
-                    <label>Adress</label><br />
-                    @Html.TextBoxFor(m=>m.PhoneItemFilter.Address)
+                    <label>Country</label><br />
+                    @Html.TextBoxFor(m => m.PhoneItemFilter.Country, new { id = "countryInput" })
+                </div>
+                <!--Label for city-->
+                <div>
+                    <label>City</label><br />
+                    @Html.TextBoxFor(m => m.PhoneItemFilter.City, new { id = "cityInput" })
+                </div>
+                <!--Label for street-->
+                <div>
+                    <label>Street</label><br />
+                    @Html.TextBoxFor(m => m.PhoneItemFilter.Street, new { id = "streetInput" })
                 </div>
             </div> 
-
-            @* <p>
-                <label>Имя</label><br />
-                <select id="selectbox" name="selectbox" ;>
-                    <option value=1 selected>Name</option>
-                    <option value=2>Phone</option>
-                    <option value=3>Adress</option>
-                </select>
-            </p> *@
         </div>
-        <button type="submit" class="button-blue button-action">Применить</button>
+        <button type="submit" class="button-blue button-action">Apply</button>
     </div>
 }
 
 <table class="table">
+    <!--Head of the table-->
     <thead>
         <tr>
+            <!--ID-->
             <th>
                 @Html.DisplayNameFor(model => model.PhoneItem.ID)
             </th>
+            <!--Name-->
             <th>
                 @Html.DisplayNameFor(model => model.PhoneItem.Name)
             </th>
+            <!--Phone-->
             <th>
                 @Html.DisplayNameFor(model => model.PhoneItem.Phone)
             </th>
+            <!--Country-->
             <th>
-                @Html.DisplayNameFor(model => model.PhoneItem.Address)
+                @Html.DisplayNameFor(model => model.PhoneItem.Country)
             </th>
+            <!--City-->
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneItem.City)
+            </th>
+            <!--Street-->
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneItem.Street)
+            </th>
+            <!--House number-->
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneItem.House_number)
+            </th>
+            <!--Email-->
             <th>
                 @Html.DisplayNameFor(model => model.PhoneItem.Email)
             </th>
             <th></th>
         </tr>
     </thead>
+    <!--Body of the table-->
     <tbody>
 @foreach (var item in Model.listPhone) {
         <tr>
+            <!--ID-->
             <td>
                 @Html.DisplayFor(modelItem => item.ID)
             </td>
+            <!--Name-->
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
+            <!--Phone-->
             <td>
                 @Html.DisplayFor(modelItem => item.Phone)
             </td>
+            <!--Country-->
             <td>
-                @Html.DisplayFor(modelItem => item.Address)
+                @Html.DisplayFor(modelItem => item.Country)
             </td>
+            <!--City-->
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <!--Street-->
+            <td>
+                @Html.DisplayFor(modelItem => item.Street)
+            </td>
+            <!--House number-->
+            <td>
+                @Html.DisplayFor(modelItem => item.House_number)
+            </td>
+            <!--Email-->
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
@@ -150,6 +187,7 @@
     const filtersContaner = document.querySelector(".filter-container");
     const btnClose = document.querySelector(".close-btn");
     const btnSetSettings = document.querySelector(".button-action");
+    const btnReset = document.querySelector(".reset-btn");
     filterOn.addEventListener("click", function (e) {
         e.preventDefault();
         filtersContaner.classList.remove("hidden");
@@ -170,5 +208,14 @@
         filtersContaner.classList.add("hidden");
         btnClose.classList.add("hidden");
         filterOn.classList.remove("hidden");
-    })
+    });
+
+    btnReset.addEventListener("click", function (e) {
+        e.preventDefault();
+        document.getElementById("nameInput").value = "";
+        document.getElementById("phoneInput").value = "";
+        document.getElementById("countryInput").value = "";
+        document.getElementById("cityInput").value = "";
+        document.getElementById("streetInput").value = "";
+    });
 </script>
