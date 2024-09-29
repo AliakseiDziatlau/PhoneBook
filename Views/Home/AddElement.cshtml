@@ -202,23 +202,22 @@
 </div>
 
 <script>
-    
-  
-    // Получаем страны при загрузке страницы
+    // receiving countries when page is loading
     document.addEventListener('DOMContentLoaded', async function () {
         await fetchCountries();
     });
 
-    // Функция для получения стран
+    // receiving countries function
     async function fetchCountries() {
         try {
             const response = await fetch('https://restcountries.com/v3.1/all');
             const countries = await response.json();
+            countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
             const countrySelect = document.getElementById('countrySelect');
-            countrySelect.innerHTML = ''; // Очищаем предыдущие варианты
+            countrySelect.innerHTML = ''; 
 
             countries.forEach(country => {
-                const option = new Option(country.name.common, country.cca2); // Используем код страны
+                const option = new Option(country.name.common, country.cca2); 
                 countrySelect.append(option);
             });
         } catch (error) {
@@ -226,34 +225,31 @@
         }
     }
 
-    // Обработка выбора страны
+    // handle selected country
     async function handleSelectCountry() {
         const countryId = document.getElementById("countrySelect").value;
         await fetchCities(countryId);
-        
-        // Обновляем поле ввода страны
         const selectedCountry = document.getElementById("countrySelect").options[document.getElementById("countrySelect").selectedIndex].text;
         document.getElementById("addressInputCountry").value = selectedCountry;
     }
 
    
 
-    // Получение городов на основе выбранной страны
+    // receiving cities of the selected country
     async function fetchCities(countryId) {
         try {
-            // Указываем правильный путь к JSON-файлу
+            // JSON file path
             const response = await fetch('/data/cities.json');
 
-            // Проверяем, успешен ли ответ
             if (!response.ok) {
                 throw new Error('Сеть ответила с ошибкой: ' + response.status);
             }
 
-            // Преобразуем ответ в JSON
             const data = await response.json();
-            console.log(data); // Проверяем, что данные загружены
+            console.log(data); 
             const countries = data.countries;
             const cities = countries[countryId];
+            cities.sort((a, b) => a.localeCompare(b));
             const citySelect = document.getElementById('citySelect');
             citySelect.innerHTML = '';
 
@@ -266,20 +262,17 @@
         }
     }
 
-    // // Обработка выбора города
+    // handlw selected city
     async function handleSelectCity() {
         const cityId = document.getElementById("citySelect").value;
         await fetchStreets(cityId);
-
-        // Обновляем поле ввода города
         const selectedCity = document.getElementById("citySelect").options[document.getElementById("citySelect").selectedIndex].text;
         document.getElementById("addressInputCity").value = selectedCity;
     }
 
-    //функция для получения списка улиц
+    //receiving streets of the selected city
     async function fetchStreets(cityName) {
         try {
-            // Формируем запрос к Overpass API
             const query = `
                 [out:json];
                 area["name"="${cityName}"]->.a;
@@ -291,32 +284,30 @@
                 >;
             `;
 
-            // URL для запроса к Overpass API
             const overpassUrl = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
 
-            // Выполняем запрос
             const response = await fetch(overpassUrl);
 
-            // Проверяем, успешен ли ответ
             if (!response.ok) {
                 throw new Error('Ошибка: ' + response.status);
             }
 
-            // Получаем данные в формате JSON
             const data = await response.json();
 
-            // Извлекаем улицы из ответа
-            const streets = data.elements.map(element => {
+            let streets = data.elements.map(element => {
                 if (element.tags && element.tags.name) {
-                    return element.tags.name; // Возвращаем название улицы
+                    return element.tags.name;
                 }
-            }).filter(Boolean); // Убираем неопределенные значения
+            }).filter(Boolean); 
+
+            streets = [...new Set(streets)];
+
+            streets.sort((a, b) => a.localeCompare(b));
 
             console.log('Улицы в городе', cityName, ':', streets);
 
-            // Здесь можно обновить селектор улиц (если он есть на странице)
             const streetSelect = document.getElementById('streetSelect');
-            streetSelect.innerHTML = ''; // Очищаем предыдущие варианты
+            streetSelect.innerHTML = ''; 
 
             streets.forEach(street => {
                 const option = new Option(street, street);
@@ -328,20 +319,17 @@
         }
     }
 
-    // Обработка выбора улицы
+    // handle selected street
     async function handleSelectStreet() {
         const streetId = document.getElementById("streetSelect").value;
         await fetchHouseNumbers(streetId);
-
-        // Обновляем поле ввода улицы
         const selectedStreet = document.getElementById("streetSelect").options[document.getElementById("streetSelect").selectedIndex].text;
         document.getElementById("addressInputStreet").value = selectedStreet;
     }
 
-    //функция которая возвращает список номеров домов 
+    //function for house numbers
     async function fetchHouseNumbers(streetName) {
         try {
-            // Формируем запрос к Overpass API
             const query = `
                 [out:json];
                 (
@@ -351,32 +339,33 @@
                 out body;
             `;
 
-            // URL для запроса к Overpass API
             const overpassUrl = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
 
-            // Выполняем запрос
             const response = await fetch(overpassUrl);
 
-            // Проверяем, успешен ли ответ
             if (!response.ok) {
                 throw new Error('Ошибка: ' + response.status);
             }
 
-            // Получаем данные в формате JSON
             const data = await response.json();
 
-            // Извлекаем номера домов из ответа
-            const houseNumbers = data.elements.map(element => {
+            let houseNumbers = data.elements.map(element => {
                 if (element.tags && element.tags['addr:housenumber']) {
-                    return element.tags['addr:housenumber']; // Возвращаем номер дома
+                    return element.tags['addr:housenumber']; 
                 }
-            }).filter(Boolean); // Убираем неопределенные значения
+            }).filter(Boolean); 
+
+            houseNumbers = [...new Set(houseNumbers)];
+
+            houseNumbers = houseNumbers
+                .map(number => parseInt(number, 10)) 
+                .filter(Boolean) 
+                .sort((a, b) => a - b);
 
             console.log('Номера домов на улице', streetName, ':', houseNumbers);
 
-            // Здесь можно обновить селектор номеров домов (если он есть на странице)
             const houseNumberSelect = document.getElementById('houseNumberSelect');
-            houseNumberSelect.innerHTML = ''; // Очищаем предыдущие варианты
+            houseNumberSelect.innerHTML = '';
 
             houseNumbers.forEach(number => {
                 const option = new Option(number, number);
@@ -388,82 +377,14 @@
         }
     }
 
-    // Функции для обработки выбора
+    // handle selected house number
     function handleSelectHouseNumber() {
         const selectElement = document.getElementById("houseNumberSelect");
         const selectedHouseNumber = selectElement.options[selectElement.selectedIndex].text;
         document.getElementById("addressInputHouseNumber").value = selectedHouseNumber;
     }
-    
-   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
-    // // Обработка выбора города
-    // async function handleSelectCity() {
-    //     const cityId = document.getElementById("citySelect").value;
-    //     await fetchStreets(cityId);
-
-    //     // Обновляем поле ввода города
-    //     const selectedCity = document.getElementById("citySelect").options[document.getElementById("citySelect").selectedIndex].text;
-    //     document.getElementById("addressInputCity").value = selectedCity;
-    // }
-
-    // // Получение улиц на основе выбранного города
-    // async function fetchStreets(cityId) {
-    //     const url = `https://nominatim.openstreetmap.org/search?city=${cityId}&format=json&addressdetails=1&limit=10`;
-
-    //     try {
-    //         const response = await fetch(url);
-    //         const streets = await response.json();
-    //         const streetSelect = document.getElementById('streetSelect');
-    //         streetSelect.innerHTML = ''; // Очищаем предыдущие варианты
-
-    //         streets.forEach(street => {
-    //             const option = new Option(street.display_name, street.place_id); // Используем ID улицы
-    //             streetSelect.append(option);
-    //         });
-    //     } catch (error) {
-    //         console.error('Ошибка при получении улиц:', error);
-    //     }
-    // }
-
-    // // Обработка выбора улицы
-    // async function handleSelectStreet() {
-    //     const streetId = document.getElementById("streetSelect").value;
-    //     await fetchHouseNumbers(streetId);
-
-    //     // Обновляем поле ввода улицы
-    //     const selectedStreet = document.getElementById("streetSelect").options[document.getElementById("streetSelect").selectedIndex].text;
-    //     document.getElementById("addressInputStreet").value = selectedStreet;
-    // }
-
-    // // Получение номеров домов на основе выбранной улицы
-    // async function fetchHouseNumbers(streetId) {
-    //     // Это может потребовать дополнительного API, так как не все API предоставляют информацию о номерах домов.
-    //     const url = `https://nominatim.openstreetmap.org/search?street=${streetId}&format=json&addressdetails=1&limit=10`;
-
-    //     try {
-    //         const response = await fetch(url);
-    //         const houseNumbers = await response.json();
-    //         const houseNumberSelect = document.getElementById('houseNumberSelect');
-    //         houseNumberSelect.innerHTML = ''; // Очищаем предыдущие варианты
-
-    //         houseNumbers.forEach(house => {
-    //             const option = new Option(house.address.house_number, house.place_id); // Используем ID дома
-    //             houseNumberSelect.append(option);
-    //         });
-    //     } catch (error) {
-    //         console.error('Ошибка при получении номеров домов:', error);
-    //     }
-    // }
-
-    // // Функции для обработки выбора
-    // function handleSelectHouseNumber() {
-    //     const selectElement = document.getElementById("houseNumberSelect");
-    //     const selectedHouseNumber = selectElement.options[selectElement.selectedIndex].text;
-    //     document.getElementById("addressInputHouseNumber").value = selectedHouseNumber;
-    // }
-
-    // Фильтрация списка городов
+    // filters for cities
     document.getElementById('myInputCity').addEventListener('input', function () {
         const filterValue = this.value.toLowerCase();
         const select = document.getElementById('citySelect');
@@ -475,7 +396,7 @@
         }
     });
 
-    // Фильтрация списка стран
+    // filters for countries
     document.getElementById('myInputCountry').addEventListener('input', function () {
         const filterValue = this.value.toLowerCase();
         const select = document.getElementById('countrySelect');
@@ -487,7 +408,7 @@
         }
     });
 
-    // Фильтрация списка улиц
+    // filters for streets
     document.getElementById('myInputStreet').addEventListener('input', function () {
         const filterValue = this.value.toLowerCase();
         const select = document.getElementById('streetSelect');
@@ -499,7 +420,7 @@
         }
     });
 
-    // Фильтрация списка номеров домов
+    // filter for house numbers
     document.getElementById('myInputHouseNumber').addEventListener('input', function () {
         const filterValue = this.value.toLowerCase();
         const select = document.getElementById('houseNumberSelect');
@@ -510,80 +431,6 @@
             options[i].style.display = optionText.includes(filterValue) ? 'block' : 'none';
         }
     });
-
-
-
-
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    // function handleSelectCountry() {
-    //     const selectElement = document.getElementById("countrySelect");
-    //     const selectedCity = selectElement.options[selectElement.selectedIndex].text;
-    //     document.getElementById("addressInputCountry").value = selectedCity;
-    // }
-
-    // function handleSelectCity() {
-    //     const selectElement = document.getElementById("citySelect");
-    //     const selectedCity = selectElement.options[selectElement.selectedIndex].text;
-    //     document.getElementById("addressInputCity").value = selectedCity;
-    // }
-    // function handleSelectStreet() {
-    //     const selectElement = document.getElementById("streetSelect");
-    //     const selectedCity = selectElement.options[selectElement.selectedIndex].text;
-    //     document.getElementById("addressInputStreet").value = selectedCity;
-    // }
-    // function handleSelectHouseNumber() {
-    //     const selectElement = document.getElementById("houseNumberSelect");
-    //     const selectedCity = selectElement.options[selectElement.selectedIndex].text;
-    //     document.getElementById("addressInputHouseNumber").value = selectedCity;
-    // }
-
-    // document.getElementById('myInputCity').addEventListener('input', function () {
-    //     const filterValue = this.value.toLowerCase();
-    //     const select = document.getElementById('citySelect');
-    //     const options = select.options;
-
-    //     for (let i = 0; i < options.length; i++) {
-    //         const optionText = options[i].text.toLowerCase();
-    //         options[i].style.display = optionText.includes(filterValue) ? 'block' : 'none';
-    //     }
-    // });
-
-    // document.getElementById('myInputCountry').addEventListener('input', function () {
-    //     const filterValue = this.value.toLowerCase();
-    //     const select = document.getElementById('countrySelect');
-    //     const options = select.options;
-
-    //     for (let i = 0; i < options.length; i++) {
-    //         const optionText = options[i].text.toLowerCase();
-    //         options[i].style.display = optionText.includes(filterValue) ? 'block' : 'none';
-    //     }
-    // });
-
-    // document.getElementById('myInputStreet').addEventListener('input', function () {
-    //     const filterValue = this.value.toLowerCase();
-    //     const select = document.getElementById('streetSelect');
-    //     const options = select.options;
-
-    //     for (let i = 0; i < options.length; i++) {
-    //         const optionText = options[i].text.toLowerCase();
-    //         options[i].style.display = optionText.includes(filterValue) ? 'block' : 'none';
-    //     }
-    // });
-
-    // document.getElementById('myInputHouseNumber').addEventListener('input', function () {
-    //     const filterValue = this.value.toLowerCase();
-    //     const select = document.getElementById('houseNumberSelect');
-    //     const options = select.options;
-
-    //     for (let i = 0; i < options.length; i++) {
-    //         const optionText = options[i].text.toLowerCase();
-    //         options[i].style.display = optionText.includes(filterValue) ? 'block' : 'none';
-    //     }
-    // });
 </script>
 
 @section Scripts {
