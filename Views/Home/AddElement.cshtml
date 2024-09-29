@@ -327,6 +327,73 @@
             console.error('Ошибка при получении улиц:', error);
         }
     }
+
+    // Обработка выбора улицы
+    async function handleSelectStreet() {
+        const streetId = document.getElementById("streetSelect").value;
+        await fetchHouseNumbers(streetId);
+
+        // Обновляем поле ввода улицы
+        const selectedStreet = document.getElementById("streetSelect").options[document.getElementById("streetSelect").selectedIndex].text;
+        document.getElementById("addressInputStreet").value = selectedStreet;
+    }
+
+    //функция которая возвращает список номеров домов 
+    async function fetchHouseNumbers(streetName) {
+        try {
+            // Формируем запрос к Overpass API
+            const query = `
+                [out:json];
+                (
+                    node["addr:street"="${streetName}"];
+                    way["addr:street"="${streetName}"];
+                );
+                out body;
+            `;
+
+            // URL для запроса к Overpass API
+            const overpassUrl = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
+
+            // Выполняем запрос
+            const response = await fetch(overpassUrl);
+
+            // Проверяем, успешен ли ответ
+            if (!response.ok) {
+                throw new Error('Ошибка: ' + response.status);
+            }
+
+            // Получаем данные в формате JSON
+            const data = await response.json();
+
+            // Извлекаем номера домов из ответа
+            const houseNumbers = data.elements.map(element => {
+                if (element.tags && element.tags['addr:housenumber']) {
+                    return element.tags['addr:housenumber']; // Возвращаем номер дома
+                }
+            }).filter(Boolean); // Убираем неопределенные значения
+
+            console.log('Номера домов на улице', streetName, ':', houseNumbers);
+
+            // Здесь можно обновить селектор номеров домов (если он есть на странице)
+            const houseNumberSelect = document.getElementById('houseNumberSelect');
+            houseNumberSelect.innerHTML = ''; // Очищаем предыдущие варианты
+
+            houseNumbers.forEach(number => {
+                const option = new Option(number, number);
+                houseNumberSelect.append(option);
+            });
+
+        } catch (error) {
+            console.error('Ошибка при получении номеров домов:', error);
+        }
+    }
+
+    // Функции для обработки выбора
+    function handleSelectHouseNumber() {
+        const selectElement = document.getElementById("houseNumberSelect");
+        const selectedHouseNumber = selectElement.options[selectElement.selectedIndex].text;
+        document.getElementById("addressInputHouseNumber").value = selectedHouseNumber;
+    }
     
    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
