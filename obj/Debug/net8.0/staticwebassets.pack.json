@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "C:\\Users\\MacBook_Windows\\source\\repos\\WebApplicationPhoneBook\\WebApplicationPhoneBook\\wwwroot\\data\\cities.json",
+      "PackagePath": "staticwebassets\\data\\cities.json"
+    },
+    {
       "Id": "C:\\Users\\MacBook_Windows\\source\\repos\\WebApplicationPhoneBook\\WebApplicationPhoneBook\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },

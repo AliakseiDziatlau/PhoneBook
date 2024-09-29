@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "qqMcK6QXNrl1lZOh/HPDacYBmX5xcjO9/009AYsRNmI=",
+  "Hash": "cFBUNq3fY5f9n2IhmNYBhlFXaAgNzj2ailKu3H1KRjo=",
   "Source": "WebApplicationPhoneBook",
   "BasePath": "_content/WebApplicationPhoneBook",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "C:\\Users\\MacBook_Windows\\source\\repos\\WebApplicationPhoneBook\\WebApplicationPhoneBook\\wwwroot\\data\\cities.json",
+      "SourceId": "WebApplicationPhoneBook",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\MacBook_Windows\\source\\repos\\WebApplicationPhoneBook\\WebApplicationPhoneBook\\wwwroot\\",
+      "BasePath": "_content/WebApplicationPhoneBook",
+      "RelativePath": "data/cities.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\data\\cities.json"
     },
     {
       "Identity": "C:\\Users\\MacBook_Windows\\source\\repos\\WebApplicationPhoneBook\\WebApplicationPhoneBook\\wwwroot\\favicon.ico",
