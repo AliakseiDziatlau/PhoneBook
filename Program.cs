@@ -1,4 +1,5 @@
-﻿using WebApplicationPhoneBook.services;
+﻿using Microsoft.EntityFrameworkCore;
+using WebApplicationPhoneBook.services;
 
 namespace WebApplicationPhoneBook
 {
@@ -11,10 +12,13 @@ namespace WebApplicationPhoneBook
        
         builder.Services.AddControllersWithViews();
 
-       
-        builder.Services.AddSingleton<ICtrlDataBase, CtrlDataBase>();
 
-       
+        // builder.Services.AddSingleton<ICtrlDataBase, CtrlDataBase>();
+
+        string connection = builder.Configuration.GetConnectionString("DefaultConnection");
+
+        // добавляем контекст ApplicationContext в качестве сервиса в приложение
+        builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 
         var app = builder.Build();
 

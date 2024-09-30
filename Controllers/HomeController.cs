@@ -11,24 +11,24 @@ namespace WebApplicationPhoneBook.Controllers
         //private CtrlDataBase ctrlDataBase = new CtrlDataBase();
         private readonly ILogger<HomeController> _logger;
 
-        private ICtrlDataBase _ctrlDataBase;
+        private ApplicationContext db;
+        //private ICtrlDataBase _ctrlDataBase;
         private List<string> _listCity = new List<string>() { "Polotsk", "Minsk", "Vitebsk", "Warszawa" };
         private List<string> _listCountry = new List<string>() { "Belarus", "Poland" };
         private List<string> _listStreet = new List<string>() { "Molodeznaya", "Parkowaya" };
         private List<string> _listHouseNumber = new List<string>() { "4", "5A" };
 
-        public HomeController(ILogger<HomeController> logger, ICtrlDataBase ctrlDataBase)
+        public HomeController(ILogger<HomeController> logger, ApplicationContext context)
         {
-            _ctrlDataBase = ctrlDataBase;
+            db = context;
             _logger = logger;
     
         }
 
-
         public IActionResult Index()
         {
             ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
-            modelPhoneItem.listPhone = _ctrlDataBase.GetList();
+            modelPhoneItem.listPhone = db.Person.ToList();
             ViewBag.IsFilterClose = true;
             return View(modelPhoneItem);
         }
@@ -36,7 +36,7 @@ namespace WebApplicationPhoneBook.Controllers
         public IActionResult GetFilter(PhoneItemFilter PhoneItemFilter)
         {
             ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
-            modelPhoneItem.listPhone = _ctrlDataBase.GetList(PhoneItemFilter);
+            //modelPhoneItem.listPhone = _ctrlDataBase.GetList(PhoneItemFilter);
             ViewBag.IsFilterClose = false;
             return View("Index", modelPhoneItem);
         }
@@ -60,7 +60,7 @@ namespace WebApplicationPhoneBook.Controllers
         }
         public IActionResult EditPhone(int id)
         {
-            var phone = _ctrlDataBase.GetList().Find(el => el.ID == id);
+            var phone = db.Person.ToList().Find(el => el.Id == id);
             ViewBag.ListCity = _listCity;
             ViewBag.ListCountry = _listCountry;
             ViewBag.ListStreet = _listStreet;
@@ -69,26 +69,42 @@ namespace WebApplicationPhoneBook.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddElement(PhoneItem phoneItem)
+        public IActionResult AddElement(PersonItem phoneItem)
         {
-            if (phoneItem.ID == 0)
+            if (phoneItem.Id == 0)
             {
-                _ctrlDataBase.Add(phoneItem);
+                db.Person.Add(phoneItem);
             }
             else
             {
-                _ctrlDataBase.Edit(phoneItem.ID, phoneItem);
+                //_ctrlDataBase.Edit(phoneItem.Id, phoneItem);
+                db.Person.Update(phoneItem);
             }
+            db.SaveChanges();
             ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
-            modelPhoneItem.listPhone = _ctrlDataBase.GetList();
+            modelPhoneItem.listPhone = db.Person.ToList();
             return View("Index", modelPhoneItem);
         }
 
         public IActionResult DeletePhone(int id)
         {
-            _ctrlDataBase.Delete(id);
+            //_ctrlDataBase.Delete(id);
+            try
+            {
+                PersonItem item = new PersonItem()
+                {
+                    Id = id
+                };
+                db.Person.Attach(item);
+                db.Person.Remove(item);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
             ModelPhoneItem modelPhoneItem = new ModelPhoneItem();
-            modelPhoneItem.listPhone = _ctrlDataBase.GetList();
+            modelPhoneItem.listPhone = db.Person.ToList();
             return View("Index", modelPhoneItem);
         }
 

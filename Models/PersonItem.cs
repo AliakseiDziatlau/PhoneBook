@@ -3,15 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApplicationPhoneBook.Models
 {
-    public class PhoneItem
+    public class PersonItem
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         [DisplayName("Name")]
         [Required(ErrorMessage = "The field 'Name' is necessary")]
         public string Name { get; set; }
         [DisplayName("Phone")]
-        [Required(ErrorMessage = "The field 'Phone' is necessary")]
-        public string Phone { get; set; }
+        [Required(ErrorMessage = "The field 'Phone_number' is necessary")]
+        public string Phone_number { get; set; }
 
         [DisplayName("Country")]
         [Required(ErrorMessage = "The field 'Country' is necessary")]
@@ -48,8 +48,8 @@ namespace WebApplicationPhoneBook.Models
         public string House_number { get; set; }
     }
     public class ModelPhoneItem { 
-        public PhoneItem PhoneItem { get; set; }
+        public PersonItem PhoneItem { get; set; }
         public PhoneItemFilter PhoneItemFilter { get; set; }
-        public List<PhoneItem> listPhone { get; set;  }
+        public List<PersonItem> listPhone { get; set;  }
     }
 }
