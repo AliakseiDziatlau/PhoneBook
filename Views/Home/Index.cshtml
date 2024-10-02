@@ -10,6 +10,13 @@
     <a asp-action="AddElement">Create New</a>
 </p>
 
+
+<div id="mess_err_id" class="hidden">
+    
+</div>
+
+
+
 <!--Filter window-->
 @using (Html.BeginForm("GetFilter", "Home", FormMethod.Post, new { id = "data-filter" }))
 {
@@ -53,9 +60,9 @@
 }
 
 <!--Map window-->
-<div id="myModal" class="modal">
+<div id="myModal" class="modall">
     <!-- Модальное окно -->
-    <div class="modal-content">
+    <div class="modall-content">
         <span class="close">&times;</span> <!-- Кнопка закрытия -->
         <h2>Карта</h2>
         <div id="map"></div> <!-- Элемент для карты -->
@@ -148,7 +155,7 @@
     </tbody>
 </table>
 <script>
-    async function deleteItm(id) {
+    @* async function deleteItm(id) {
         let isDelete = confirm("Вы хотите удалить запись?");
         if (isDelete) {
             try {
@@ -166,20 +173,27 @@
                 console.error('There was a problem with the fetch operation:', error);
             }
         }
-    }
-    // function deleteItm(id) {
-    //     let isDelete = confirm("Вы хотите удалить запись?");
-    //     if (isDelete) {
-    //         //      window.open("Home/Delete/" + id);
-    //         $.ajax({
-    //             url: '/Home/Delete/' + id,       
-    //             method: 'get',
-    //             success: function (data) {
-    //             document.location.href = '@Url.Action("Index", "Home")';
-    //         }
-    //       });
-    //     }
-    // }
+    } *@
+     function deleteItm(id) {
+         let isDelete = confirm("Вы хотите удалить запись?");
+         if (isDelete) {
+             //window.open("Home/Delete/" + id);
+             $.ajax({
+                 url: '/Home/DeletePhone/' + id,       
+                 method: 'get',
+                 success: function (data) {
+                     if (data === "ok") {
+                         document.location.href = '@Url.Action("Index", "Home")';
+                     }
+                     else {
+                         const messageBox = document.getElementById("mess_err_id");
+                         messageBox.classList.remove("hidden");
+                         messageBox.innerHTML = `Error: ${data}`;
+                     }
+                 }
+           });
+         }
+     }
     const filterOn = document.querySelector(".filter-on");
     const filtersContaner = document.querySelector(".filter-container");
     const btnClose = document.querySelector(".close-btn");
@@ -229,10 +243,13 @@
         // Инициализация карты
         const map = L.map('map').setView(coords, 13); // Уровень масштабирования 13
 
-        // Добавление слоя карты
+       @*  // Добавление слоя карты
         L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        }).addTo(map);
+        }).addTo(map); *@
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
         // Добавление маркера на текущую позицию
         const marker = L.marker(coords).addTo(map)

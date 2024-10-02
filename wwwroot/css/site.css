@@ -100,13 +100,13 @@ body {
 
 /*//////////////////////////////////////////*/
 
-/*#map {
+#map {
     height: 80%; 
     width: 100%; 
 }
 
 
-.modal {
+.modall {
     display: none;
     position: fixed; 
     z-index: 1000;
@@ -118,7 +118,7 @@ body {
     background-color: rgba(0, 0, 0, 0.5); 
 }
 
-.modal-content {
+.modall-content {
     background-color: #fefefe;
     margin: auto; 
     padding: 20px;
@@ -143,4 +143,4 @@ body {
     color: black;
     text-decoration: none;
     cursor: pointer; 
-}*/
+}
