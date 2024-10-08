@@ -22,7 +22,6 @@
 {
     
     <button class="filter-on">Filter</button>
-    <button id="openModal">Открыть карту</button>
     <div class="filter-container hidden">
         <button type="button" class="close-btn hidden">&times;</button>
         <button type="button" class="reset-btn">⟳</button>
@@ -58,17 +57,6 @@
         <button type="submit" class="button-blue button-action">Apply</button>
     </div>
 }
-
-<!--Map window-->
-<div id="myModal" class="modall">
-    <!-- Модальное окно -->
-    <div class="modall-content">
-        <span class="close">&times;</span> <!-- Кнопка закрытия -->
-        <h2>Карта</h2>
-        <div id="map"></div> <!-- Элемент для карты -->
-    </div>
-</div>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <table class="table">
     <!--Head of the table-->
@@ -148,36 +136,15 @@
             <td>
                 @Html.ActionLink("Edit", "EditPhone", new { id = item.Id }) |
                 <a href="#" onclick="deleteItm(@item.Id)">Delete</a>
-                @* @Html.ActionLink("Delete", "Delete", new { id = item.ID }) *@
             </td>
         </tr>
 }
     </tbody>
 </table>
 <script>
-    @* async function deleteItm(id) {
-        let isDelete = confirm("Вы хотите удалить запись?");
-        if (isDelete) {
-            try {
-
-                const response = await fetch('/Home/DeletePhone/' + id, {
-                    method: 'GET'
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                window.location.href = '@Url.Action("Index", "Home")' ;
-            } catch (error) {
-                console.error('There was a problem with the fetch operation:', error);
-            }
-        }
-    } *@
      function deleteItm(id) {
          let isDelete = confirm("Вы хотите удалить запись?");
          if (isDelete) {
-             //window.open("Home/Delete/" + id);
              $.ajax({
                  url: '/Home/DeletePhone/' + id,       
                  method: 'get',
@@ -206,7 +173,6 @@
         btnClose.classList.remove("hidden");
     });
     window.addEventListener('load', function () {
-        // Этот код выполнится, когда вся страница полностью загружена
         if ('@ViewBag.IsFilterClose' === 'False') {
             filtersContaner.classList.remove("hidden");
             btnClose.classList.remove("hidden");
@@ -229,66 +195,4 @@
         document.getElementById("cityInput").value = "";
         document.getElementById("streetInput").value = "";
     });
-
-
-    /////////////////////////////
-    function _loadMap(position) {
-        const { latitude } = position.coords;
-        const { longitude } = position.coords;
-
-        console.log(`Координаты: ${latitude}, ${longitude}`);
-
-        const coords = [latitude, longitude];
-
-        // Инициализация карты
-        const map = L.map('map').setView(coords, 13); // Уровень масштабирования 13
-
-       @*  // Добавление слоя карты
-        L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        }).addTo(map); *@
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-        // Добавление маркера на текущую позицию
-        const marker = L.marker(coords).addTo(map)
-            .bindPopup('Вы находитесь здесь!')
-            .openPopup();
-    }
-
-    // Обработка ошибок при получении геолокации
-    function handleError(err) {
-        console.warn(`Ошибка (${err.code}): ${err.message}`);
-    }
-
-    // Получаем геолокацию пользователя
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(_loadMap, handleError);
-    } else {
-        console.log("Геолокация не поддерживается вашим браузером.");
-    }
-
-    // Модальное окно
-    const modal = document.getElementById("myModal");
-    const btnOpen = document.getElementById("openModal");
-    const span = document.getElementsByClassName("close")[0];
-
-    // Открытие модального окна при нажатии кнопки
-    btnOpen.onclick = function (e) {
-        e.preventDefault();
-        modal.style.display = "block";
-    }
-
-    // Закрытие модального окна
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
-
-    // Закрытие модального окна при клике вне его
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
 </script>

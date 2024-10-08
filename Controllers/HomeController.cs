@@ -77,19 +77,19 @@ namespace WebApplicationPhoneBook.Controllers
 
         public IActionResult AddElement()
         {
-            ViewBag.ListCity = _listCity;
-            ViewBag.ListCountry = _listCountry;
-            ViewBag.ListStreet = _listStreet;
-            ViewBag.ListHouseNumber = _listHouseNumber;
+            //ViewBag.ListCity = _listCity;
+            //ViewBag.ListCountry = _listCountry;
+            //ViewBag.ListStreet = _listStreet;
+            //ViewBag.ListHouseNumber = _listHouseNumber;
             return View();
         }
         public IActionResult EditPhone(int id)
         {
             var phone = db.Person.ToList().Find(el => el.Id == id);
-            ViewBag.ListCity = _listCity;
-            ViewBag.ListCountry = _listCountry;
-            ViewBag.ListStreet = _listStreet;
-            ViewBag.ListHouseNumber = _listHouseNumber;
+            //ViewBag.ListCity = _listCity;
+            //ViewBag.ListCountry = _listCountry;
+            //ViewBag.ListStreet = _listStreet;
+            //ViewBag.ListHouseNumber = _listHouseNumber;
             return View("AddElement", phone);
         }
 
@@ -118,7 +118,7 @@ namespace WebApplicationPhoneBook.Controllers
             {
                 PersonItem item = new PersonItem()
                 {
-                    Id = 4000
+                    Id = id
                 };
                 db.Person.Attach(item);
                 db.Person.Remove(item);
